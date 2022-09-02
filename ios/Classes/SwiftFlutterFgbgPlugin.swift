@@ -11,7 +11,7 @@ public class SwiftFlutterFGBGPlugin: NSObject, FlutterPlugin, FlutterStreamHandl
     let lifeCycleChannel = "com.ajinasokan.flutter_fgbg/events"
     let lifecycleEventChannel = FlutterEventChannel(name: lifeCycleChannel, binaryMessenger: registrar.messenger())
     lifecycleEventChannel.setStreamHandler(instance as FlutterStreamHandler & NSObjectProtocol)
-
+  }
     public func onListen(withArguments arguments: Any?,
                          eventSink: @escaping FlutterEventSink) -> FlutterError? {
         self.eventSink = eventSink
