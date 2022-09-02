@@ -12,50 +12,46 @@ public class SwiftFlutterFGBGPlugin: NSObject, FlutterPlugin, FlutterStreamHandl
     let lifecycleEventChannel = FlutterEventChannel(name: lifeCycleChannel, binaryMessenger: registrar.messenger())
     lifecycleEventChannel.setStreamHandler(instance as FlutterStreamHandler & NSObjectProtocol)
 
-
-
-    let notificationCenter = NotificationCenter.default
-    notificationCenter.addObserver(instance,
-                                   selector: #selector(didBecomeActive),
-                                   name: UIApplication.didBecomeActiveNotification,
-                                   object: nil)
-    
-    notificationCenter.addObserver(instance,
-                                   selector: #selector(didEnterBackground),
-                                   name: UIApplication.didEnterBackgroundNotification,
-                                   object: nil)
-
-     notificationCenter.addObserver(instance,
-                                    selector: #selector(willEnterForeground),
-                                    name: UIApplication.willEnterForegroundNotification,
-                                    object: nil)
-    
-    notificationCenter.addObserver(instance,
-                                   selector: #selector(willResignActive),
-                                   name: UIApplication.willResignActiveNotification,
-                                   object: nil)
-    
-
-    notificationCenter.addObserver(instance,
-                                    selector: #selector(willTerminate),
-                                    name: UIApplication.willTerminateNotification,
-                                    object: nil)
-
-
-  }
-    
     public func onListen(withArguments arguments: Any?,
                          eventSink: @escaping FlutterEventSink) -> FlutterError? {
         self.eventSink = eventSink
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(instance,
+                                    selector: #selector(didBecomeActive),
+                                    name: UIApplication.didBecomeActiveNotification,
+                                    object: nil)
+        
+        notificationCenter.addObserver(instance,
+                                    selector: #selector(didEnterBackground),
+                                    name: UIApplication.didEnterBackgroundNotification,
+                                    object: nil)
+
+        notificationCenter.addObserver(instance,
+                                        selector: #selector(willEnterForeground),
+                                        name: UIApplication.willEnterForegroundNotification,
+                                        object: nil)
+        
+        notificationCenter.addObserver(instance,
+                                    selector: #selector(willResignActive),
+                                    name: UIApplication.willResignActiveNotification,
+                                    object: nil)
+        
+
+        notificationCenter.addObserver(instance,
+                                        selector: #selector(willTerminate),
+                                        name: UIApplication.willTerminateNotification,
+                                        object: nil)
+
         return nil
     }
 
     public func onCancel(withArguments arguments: Any?) -> FlutterError? {
         eventSink = nil
+        NotificationCenter.default.removeObserver(instance)
         return nil
     }
 
-    public func addToEventSink(event: String) {
+    @objc func addToEventSink(event: String) {
         do {
             try self.eventSink?(event)
         } catch {
