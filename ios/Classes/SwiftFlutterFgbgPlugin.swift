@@ -16,28 +16,28 @@ public class SwiftFlutterFGBGPlugin: NSObject, FlutterPlugin, FlutterStreamHandl
                          eventSink: @escaping FlutterEventSink) -> FlutterError? {
         self.eventSink = eventSink
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(instance,
+        notificationCenter.addObserver(self.instance,
                                     selector: #selector(didBecomeActive),
                                     name: UIApplication.didBecomeActiveNotification,
                                     object: nil)
         
-        notificationCenter.addObserver(instance,
+        notificationCenter.addObserver(self.instance,
                                     selector: #selector(didEnterBackground),
                                     name: UIApplication.didEnterBackgroundNotification,
                                     object: nil)
 
-        notificationCenter.addObserver(instance,
+        notificationCenter.addObserver(self.instance,
                                         selector: #selector(willEnterForeground),
                                         name: UIApplication.willEnterForegroundNotification,
                                         object: nil)
         
-        notificationCenter.addObserver(instance,
+        notificationCenter.addObserver(self.instance,
                                     selector: #selector(willResignActive),
                                     name: UIApplication.willResignActiveNotification,
                                     object: nil)
         
 
-        notificationCenter.addObserver(instance,
+        notificationCenter.addObserver(self.instance,
                                         selector: #selector(willTerminate),
                                         name: UIApplication.willTerminateNotification,
                                         object: nil)
@@ -47,7 +47,7 @@ public class SwiftFlutterFGBGPlugin: NSObject, FlutterPlugin, FlutterStreamHandl
 
     public func onCancel(withArguments arguments: Any?) -> FlutterError? {
         eventSink = nil
-        NotificationCenter.default.removeObserver(instance)
+        NotificationCenter.default.removeObserver(self.instance)
         return nil
     }
 
